@@ -1,0 +1,1 @@
+export const localKey = "KlyuSEX";
