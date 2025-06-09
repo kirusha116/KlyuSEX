@@ -11,7 +11,8 @@ import type { Measures } from "@/models/Measures";
 import { getUnit } from "@/utils/getUnit";
 import { MyDrawer } from "./MyDrawer";
 import { Input } from "../ui/input";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
+import { accuracy } from "@/constants/accuracy";
 
 export function MobileContent({
   values,
@@ -54,12 +55,15 @@ export function MobileContent({
       <MyDrawer
         isOpen={isOpen}
         onOpenChange={setIsOpen}
-        title="Редактируй"
+        title={labels[selectedState]}
         content={
           <div className="w-[92%] m-auto flex items-center justify-around">
             <Button
               onClick={() => {
-                const newValue = (+values[selectedState] - 1).toFixed(1);
+                const newValue = (
+                  +values[selectedState] -
+                  10 ** -accuracy[selectedState]
+                ).toFixed(accuracy[selectedState]);
                 setValues({
                   ...values,
                   [selectedState]: newValue,
@@ -67,22 +71,30 @@ export function MobileContent({
                 setValue(selectedState, newValue);
               }}
             >
-              <ChevronLeft color="#ffffff" />
+              <Minus color="#ffffff" />
             </Button>
             <Input
+              type="number"
+              min={0}
+              step={accuracy[selectedState]}
               className="w-15 text-center"
               {...register(selectedState)}
               onChange={(e) => {
                 setValues({
                   ...values,
-                  [selectedState]: e.target.value,
+                  [selectedState]: (+e.target.value).toFixed(
+                    accuracy[selectedState]
+                  ),
                 });
                 setValue(selectedState, e.target.value);
               }}
             />
             <Button
               onClick={() => {
-                const newValue = (+values[selectedState] + 1).toFixed(1);
+                const newValue = (
+                  +values[selectedState] +
+                  10 ** -accuracy[selectedState]
+                ).toFixed(accuracy[selectedState]);
                 setValues({
                   ...values,
                   [selectedState]: newValue,
@@ -90,7 +102,7 @@ export function MobileContent({
                 setValue(selectedState, newValue);
               }}
             >
-              <ChevronRight color="#ffffff" />
+              <Plus color="#ffffff" />
             </Button>
           </div>
         }

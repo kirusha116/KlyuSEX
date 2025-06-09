@@ -23,7 +23,7 @@ export function Header({
 
   return (
     <header>
-      <div className="relative w-[80%] flex m-auto justify-between  mt-5">
+      <div className="relative flex m-auto justify-between  mt-5">
         <Button
           className="h-12 w-12 rounded-[50%]"
           onClick={
@@ -57,7 +57,7 @@ export function Header({
         </Button>
       </div>
       {!isDesktop && (
-        <h1 className="text-primary text-4xl leading-12 text-center">{mainText}</h1>
+        <h1 className="text-primary text-5xl leading-12 text-center mb-3">{mainText}</h1>
       )}
     </header>
   );

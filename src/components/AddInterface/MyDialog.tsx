@@ -31,7 +31,7 @@ export function MyDialog({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {content}
-        <DialogFooter className="mr-[8%] mt-4">{footer}</DialogFooter>
+        <DialogFooter className="md:mr-[8%] mt-4">{footer}</DialogFooter>
       </DialogContent>
     </Dialog>
   );

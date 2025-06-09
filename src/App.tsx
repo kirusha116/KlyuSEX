@@ -19,23 +19,13 @@ function App() {
   // console.log(history);
 
   return (
-    <div className="container max-w-7xl m-auto">
+    <div className="container max-w-7xl m-auto px-4">
       <Header
         mainText={labels[selectedState]}
         setSelectedState={setSelectedState}
         labels={labels}
         openModal={() => setIsAddOpen(true)}
       />
-
-      <Button
-        onClick={() => {
-          localStorage.removeItem("KlyuSEX");
-          location.reload();
-        }}
-        className="m-auto mt-10"
-      >
-        Очистить
-      </Button>
 
       {lastMeasures && (
         <h2 className="text-primary text-5xl text-center">
@@ -46,6 +36,16 @@ function App() {
           }`}
         </h2>
       )}
+
+      <Button
+        onClick={() => {
+          localStorage.removeItem("KlyuSEX");
+          location.reload();
+        }}
+        className="m-auto mt-10"
+      >
+        Очистить
+      </Button>
 
       <AddInterface
         isOpen={isAddOpen}

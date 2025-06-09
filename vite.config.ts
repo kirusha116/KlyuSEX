@@ -11,4 +11,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: { outDir: "docs" },
+  base: "https://kirusha116.github.io/KlyuSEX",
 });
