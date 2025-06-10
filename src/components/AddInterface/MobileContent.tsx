@@ -1,29 +1,28 @@
 import { states } from "@/constants/states";
 import { Button } from "../ui/button";
 import { labels } from "@/constants/labels";
-import type {
-  FieldValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import type { Measures } from "@/models/Measures";
 import { getUnit } from "@/utils/getUnit";
 import { MyDrawer } from "./MyDrawer";
 import { Input } from "../ui/input";
 import { Minus, Plus } from "lucide-react";
 import { accuracy } from "@/constants/accuracy";
+import type {
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
+import { Calendar28 } from "./Calendar28";
 
 export function MobileContent({
-  values,
   register,
+  getValues,
   setValue,
-  setValues,
 }: {
-  values: Measures;
-  register: UseFormRegister<FieldValues>;
-  setValue: UseFormSetValue<FieldValues>;
-  setValues: Dispatch<SetStateAction<Measures>>;
+  register: UseFormRegister<Measures>;
+  getValues: UseFormGetValues<Measures>;
+  setValue: UseFormSetValue<Measures>;
 }) {
   //
   const [selectedState, setSelectedState] = useState(states.Weight);
@@ -42,64 +41,67 @@ export function MobileContent({
                 }}
                 className="w-full mb-2"
               >
-                <span>{`${labels[state]}, ${values[state]} ${
+                <span>{`${labels[state]}, ${getValues(state)} ${
                   state === states.MetabolicAge
-                    ? getUnit(state, +values[state])
+                    ? getUnit(state, +getValues(state))
                     : getUnit(state)
                 }`}</span>
               </Button>
             </li>
           );
         })}
+        <Calendar28
+          register={register}
+          getValues={getValues}
+          setValue={setValue}
+        />
       </ul>
       <MyDrawer
         isOpen={isOpen}
         onOpenChange={setIsOpen}
+        //
         title={labels[selectedState]}
+        //
         content={
           <div className="w-[92%] m-auto flex items-center justify-around">
             <Button
               onClick={() => {
-                const newValue = (
-                  +values[selectedState] -
-                  10 ** -accuracy[selectedState]
-                ).toFixed(accuracy[selectedState]);
-                setValues({
-                  ...values,
-                  [selectedState]: newValue,
-                });
-                setValue(selectedState, newValue);
+                setValue(
+                  selectedState,
+                  (
+                    +getValues(selectedState) -
+                    10 ** -accuracy[selectedState]
+                  ).toFixed(accuracy[selectedState])
+                );
               }}
             >
               <Minus color="#ffffff" />
             </Button>
             <Input
+              className="w-15 text-center"
               type="number"
               min={0}
-              step={accuracy[selectedState]}
-              className="w-15 text-center"
+              step={10 ** -accuracy[selectedState]}
+              lang="en"
               {...register(selectedState)}
-              onChange={(e) => {
-                setValues({
-                  ...values,
-                  [selectedState]: (+e.target.value).toFixed(
-                    accuracy[selectedState]
-                  ),
-                });
-                setValue(selectedState, e.target.value);
+              onBlur={() => {
+                if (getValues(selectedState)) {
+                  setValue(
+                    selectedState,
+                    (+getValues(selectedState)).toFixed(accuracy[selectedState])
+                  );
+                }
               }}
             />
             <Button
               onClick={() => {
-                const newValue = (
-                  +values[selectedState] +
-                  10 ** -accuracy[selectedState]
-                ).toFixed(accuracy[selectedState]);
-                setValues({
-                  ...values,
-                  [selectedState]: newValue,
-                });
-                setValue(selectedState, newValue);
+                setValue(
+                  selectedState,
+                  (
+                    +getValues(selectedState) +
+                    10 ** -accuracy[selectedState]
+                  ).toFixed(accuracy[selectedState])
+                );
               }}
             >
               <Plus color="#ffffff" />

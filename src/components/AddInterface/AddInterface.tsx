@@ -5,11 +5,11 @@ import { MyDrawer } from "./MyDrawer";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { states } from "@/constants/states";
-import type { Measures } from "@/models/Measures";
 import { checkEmpty } from "@/utils/checkEmpty";
 import { useEffect, useMemo, useState } from "react";
 import { DesktopContent } from "./DesktopContent";
 import { MobileContent } from "./MobileContent";
+import { formatDate } from "@/utils/formatDate";
 
 export function AddInterface({
   isOpen,
@@ -46,15 +46,15 @@ export function AddInterface({
       [states.MetabolicAge]: MetabolicAge,
       [states.Bones]: Bones,
       [states.VisceralFat]: VisceralFat,
+      date: formatDate(new Date())
     }),
     [Weight, Fat, Water, Muscles, MetabolicAge, Bones, VisceralFat]
   );
   //
-  const [values, setValues] = useState<Measures>(initValues);
-  //
   const isDesktop = useMediaQuery<boolean>("(min-width: 768px)");
-  const { register, handleSubmit, setValue } = useForm({
-    defaultValues: values,
+  //
+  const { register, handleSubmit, getValues, setValue } = useForm({
+    defaultValues: initValues,
   });
   //
   useEffect(() => {
@@ -62,7 +62,6 @@ export function AddInterface({
       Object.values(states).forEach((state) => {
         setValue(state, initValues[state]);
       });
-      setValues(initValues);
     }
   }, [initValues, isOpen, setValue]);
   //
@@ -95,8 +94,9 @@ export function AddInterface({
     content: (
       <DesktopContent
         register={register}
-        values={values}
         isWarning={isWarning}
+        getValues={getValues}
+        setValue={setValue}
       />
     ),
   };
@@ -105,9 +105,8 @@ export function AddInterface({
     content: (
       <MobileContent
         register={register}
-        values={values}
+        getValues={getValues}
         setValue={setValue}
-        setValues={setValues}
       />
     ),
   };
@@ -126,7 +125,6 @@ export function AddInterface({
             onOpenChange(false);
             setIsWarning(false);
           }
-          setValues(d);
         })}
       >
         {isDesktop && <MyDialog {...desktopContent} />}

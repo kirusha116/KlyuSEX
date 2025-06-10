@@ -8,4 +8,5 @@ export type Measures = {
   [states.MetabolicAge]: string;
   [states.Bones]: string;
   [states.VisceralFat]: string;
+  date: string;
 };
