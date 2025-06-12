@@ -1,32 +1,5 @@
-const monthsRu = [
-  "января",
-  "февраля",
-  "марта",
-  "апреля",
-  "мая",
-  "июня",
-  "июля",
-  "августа",
-  "сентября",
-  "октября",
-  "ноября",
-  "декабря",
-];
-
-const monthsEn = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+import { monthsEn } from "@/constants/monthsEn";
+import { monthsRu } from "@/constants/monthsRu";
 
 export function toIsoFormat(date: string) {
   const dateArray = date.split(" ");

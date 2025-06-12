@@ -8,14 +8,16 @@ import { Button } from "./components/ui/button";
 import { AddInterface } from "./components/AddInterface/AddInterface";
 import { saveHistory } from "./utils/saveHistory";
 import { getUnit } from "./utils/getUnit";
+import { useMediaQuery } from "@mui/material";
 
 function App() {
   const [history, setHistory] = useState<Records[]>(getHistory());
   const lastMeasures = history.at(-1);
   const [selectedState, setSelectedState] = useState<string>(states.Weight);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const isDesktop = useMediaQuery<boolean>("(min-width: 768px)");
 
-  // console.log(JSON.parse(localStorage.getItem("KlyuSEX")));
+  // console.log(JSON.parse(localStorage.getItem(localKey)));
   // console.log(history);
 
   return (
@@ -27,8 +29,9 @@ function App() {
         openModal={() => setIsAddOpen(true)}
       />
 
-      {lastMeasures && (
-        <h2 className="text-primary text-5xl text-center">
+      {/* Контент для ПК */}
+      {lastMeasures && isDesktop && (
+        <h2 className="text-primary text-5xl text-center mt-5">
           {`${lastMeasures[selectedState]} ${
             selectedState === states.MetabolicAge
               ? getUnit(selectedState, +lastMeasures[states.MetabolicAge])
@@ -37,15 +40,28 @@ function App() {
         </h2>
       )}
 
-      <Button
-        onClick={() => {
-          localStorage.removeItem("KlyuSEX");
-          location.reload();
-        }}
-        className="m-auto mt-10"
-      >
-        Очистить
-      </Button>
+      {/* Контент для мобилки */}
+      {lastMeasures && !isDesktop && (
+        <h2 className="text-primary text-5xl text-center mt-5">
+          {`${lastMeasures[selectedState]} ${
+            selectedState === states.MetabolicAge
+              ? getUnit(selectedState, +lastMeasures[states.MetabolicAge])
+              : getUnit(selectedState)
+          }`}
+        </h2>
+      )}
+
+      <div className="w-full">
+        <Button
+          onClick={() => {
+            localStorage.removeItem("KlyuSEX");
+            location.reload();
+          }}
+          className="m-auto mt-10"
+        >
+          Очистить
+        </Button>
+      </div>
 
       <AddInterface
         isOpen={isAddOpen}

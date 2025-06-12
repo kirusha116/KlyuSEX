@@ -32,10 +32,10 @@ export function DesktopContent({
   //
   return (
     <>
-      <ul>
+      <ul className="p-4">
         {Object.values(states).map((state) => {
           return (
-            <li className="mb-2 w-[85%] m-auto" key={state}>
+            <li className="m-auto mb-2" key={state}>
               <label className="flex flex-row items-center">
                 <span>{labels[state]}</span>
                 <div className="grow-1"></div>
