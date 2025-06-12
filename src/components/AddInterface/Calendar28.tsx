@@ -15,7 +15,7 @@ import type {
   UseFormSetValue,
 } from "react-hook-form";
 import type { Measures } from "@/models/Measures";
-import { toNumberDate } from "@/utils/toNumberDate";
+import { toIsoFormat } from "@/utils/toIsoFormat";
 function formatDate(date: Date | undefined) {
   if (!date) {
     return "";
@@ -43,7 +43,7 @@ export function Calendar28({
 }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState<Date | undefined>(
-    new Date(toNumberDate(getValues("date")))
+    new Date(toIsoFormat(getValues("date")))
   );
   const [month, setMonth] = React.useState<Date | undefined>(date);
   return (
