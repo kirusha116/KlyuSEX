@@ -27,7 +27,7 @@ export function Menu({
     changeButtonIcon();
     setTimeout(() => {
       onClose();
-    }, 500);
+    }, 250);
   };
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function Menu({
     <ul
       ref={menu}
       className={
-        "absolute top-[78px] rounded-[12px] text-white text-xl bg-primary overflow-hidden transition-all duration-500 h-0 w-[154px] left-3"
+        "z-50 absolute top-[78px] rounded-[12px] text-white text-xl bg-primary overflow-hidden transition-all duration-250 h-0 w-[154px] left-3"
       }
       style={style}
     >

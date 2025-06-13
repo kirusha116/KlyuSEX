@@ -9,6 +9,7 @@ import { AddInterface } from "./components/AddInterface/AddInterface";
 import { saveHistory } from "./utils/saveHistory";
 import { getUnit } from "./utils/getUnit";
 import { useMediaQuery } from "@mui/material";
+import { MobileMainContent } from "./components/MobileMainContent/MobileMainContent";
 
 function App() {
   const [history, setHistory] = useState<Records[]>(getHistory());
@@ -21,7 +22,7 @@ function App() {
   // console.log(history);
 
   return (
-    <div className="container max-w-7xl m-auto px-4">
+    <div className="w-full md:container xl:max-w-7xl m-auto">
       <Header
         mainText={labels[selectedState]}
         setSelectedState={setSelectedState}
@@ -42,13 +43,13 @@ function App() {
 
       {/* Контент для мобилки */}
       {lastMeasures && !isDesktop && (
-        <h2 className="text-primary text-5xl text-center mt-5">
-          {`${lastMeasures[selectedState]} ${
-            selectedState === states.MetabolicAge
-              ? getUnit(selectedState, +lastMeasures[states.MetabolicAge])
-              : getUnit(selectedState)
-          }`}
-        </h2>
+        <MobileMainContent
+          lastMeasures={lastMeasures}
+          selectedState={Object.values(states).indexOf(selectedState)}
+          setSelectedState={(index: number) =>
+            setSelectedState(Object.values(states)[index])
+          }
+        />
       )}
 
       <div className="w-full">
