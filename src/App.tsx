@@ -7,9 +7,9 @@ import { getHistory } from "./utils/getHistory";
 import { Button } from "./components/ui/button";
 import { AddInterface } from "./components/AddInterface/AddInterface";
 import { saveHistory } from "./utils/saveHistory";
-import { getUnit } from "./utils/getUnit";
 import { useMediaQuery } from "@mui/material";
-import { MobileMainContent } from "./components/MobileMainContent/MobileMainContent";
+import { MobileMainContent } from "./components/MainContent/MobileMainContent";
+import { DesktopMainContent } from "./components/MainContent/DesktopMainContent";
 
 function App() {
   const [history, setHistory] = useState<Records[]>(getHistory());
@@ -28,17 +28,15 @@ function App() {
         setSelectedState={setSelectedState}
         labels={labels}
         openModal={() => setIsAddOpen(true)}
+        isDesktop={isDesktop}
       />
 
       {/* Контент для ПК */}
       {lastMeasures && isDesktop && (
-        <h2 className="text-primary text-5xl text-center mt-5">
-          {`${lastMeasures[selectedState]} ${
-            selectedState === states.MetabolicAge
-              ? getUnit(selectedState, +lastMeasures[states.MetabolicAge])
-              : getUnit(selectedState)
-          }`}
-        </h2>
+        <DesktopMainContent
+          lastMeasures={lastMeasures}
+          selectedState={selectedState}
+        />
       )}
 
       {/* Контент для мобилки */}
@@ -72,6 +70,7 @@ function App() {
           setHistory(newHistory);
           saveHistory(newHistory);
         }}
+        isDesktop={isDesktop}
         {...lastMeasures}
       />
     </div>

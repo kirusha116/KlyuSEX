@@ -4,22 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "@/components/Header/Menu";
 import { ButtonIcon } from "@/components/Header/ButtonIcon";
 import { Plus } from "lucide-react";
-import { useMediaQuery } from "@mui/material";
 
 export function Header({
   mainText,
   setSelectedState,
   labels,
   openModal,
+  isDesktop,
 }: {
   mainText: string;
   setSelectedState: (state: string) => void;
   labels: Labels;
   openModal: () => void;
+  isDesktop: boolean;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isIconCross, setIsIconCross] = useState<boolean>(false);
-  const isDesktop = useMediaQuery<boolean>("(min-width: 768px)");
 
   return (
     <header className="relative flex m-auto justify-between mt-5 mx-4">

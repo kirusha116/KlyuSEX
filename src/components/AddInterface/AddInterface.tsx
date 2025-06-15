@@ -1,5 +1,4 @@
 import type { Records } from "@/models/Records";
-import { useMediaQuery } from "@mui/material";
 import { MyDialog } from "./MyDialog";
 import { MyDrawer } from "./MyDrawer";
 import { Button } from "../ui/button";
@@ -15,6 +14,7 @@ export function AddInterface({
   isOpen,
   onOpenChange,
   save,
+  isDesktop,
   //
   Weight = "",
   Fat = "",
@@ -27,6 +27,7 @@ export function AddInterface({
   isOpen: boolean;
   onOpenChange: (state: boolean) => void;
   save: (item: Records) => void;
+  isDesktop: boolean;
   //
   Weight?: string;
   Fat?: string;
@@ -46,12 +47,10 @@ export function AddInterface({
       [states.MetabolicAge]: MetabolicAge,
       [states.Bones]: Bones,
       [states.VisceralFat]: VisceralFat,
-      date: formatDate(new Date())
+      date: formatDate(new Date()),
     }),
     [Weight, Fat, Water, Muscles, MetabolicAge, Bones, VisceralFat]
   );
-  //
-  const isDesktop = useMediaQuery<boolean>("(min-width: 768px)");
   //
   const { register, handleSubmit, getValues, setValue } = useForm({
     defaultValues: initValues,
