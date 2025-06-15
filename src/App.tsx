@@ -22,7 +22,7 @@ function App() {
   // console.log(history);
 
   return (
-    <div className="w-full md:container xl:max-w-7xl m-auto">
+    <div className="flex flex-col h-screen w-full md:container xl:max-w-7xl m-auto">
       <Header
         mainText={labels[selectedState]}
         setSelectedState={setSelectedState}
@@ -36,6 +36,7 @@ function App() {
         <DesktopMainContent
           lastMeasures={lastMeasures}
           selectedState={selectedState}
+          history={history}
         />
       )}
 
