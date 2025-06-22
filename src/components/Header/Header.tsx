@@ -11,18 +11,20 @@ export function Header({
   labels,
   openModal,
   isDesktop,
+  className,
 }: {
   mainText: string;
   setSelectedState: (state: string) => void;
   labels: Labels;
   openModal: () => void;
   isDesktop: boolean;
+  className: string;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isIconCross, setIsIconCross] = useState<boolean>(false);
 
   return (
-    <header className="relative flex m-auto justify-between mt-5 mx-4">
+    <header className={`${className} flex justify-between mt-10`}>
       <Button
         className="h-12 w-12 rounded-[50%]"
         onClick={

@@ -1,7 +1,8 @@
 import type { Records } from "@/models/Records";
 import { toNumberFormat } from "./toNumberFormat";
+import type { Measures } from "@/models/Measures";
 
-export function makeChartData(history: Records[], selectedState: string) {
+export function makeChartData(history: Records[]) {
   //
   //
   const getDatesArray = (start: Date, end: Date) => {
@@ -25,16 +26,15 @@ export function makeChartData(history: Records[], selectedState: string) {
     new Date(toNumberFormat(history[history.length - 1].date))
   );
   //
-  type HistoryObj = { [x: string]: string };
+  type HistoryObj = { [x: string]: Measures };
   //
   const historyObj: HistoryObj = history.reduce((acc, item) => {
-    return { ...acc, [item.date]: item[selectedState] };
+    return { ...acc, [item.date]: item };
   }, {});
   //
   return [
     ...datesArray.map((date) => {
-      return { date, line: historyObj[date] };
+      return { ...historyObj[date], date };
     }),
-    { date: "", line: history[history.length - 1][selectedState] },
   ];
 }

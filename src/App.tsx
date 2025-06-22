@@ -18,12 +18,13 @@ function App() {
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const isDesktop = useMediaQuery<boolean>("(min-width: 768px)");
 
-  // console.log(JSON.parse(localStorage.getItem(localKey)));
+  // console.log(JSON.parse(localStorage.getItem("KlyuSEX")));
   // console.log(history);
 
   return (
-    <div className="flex flex-col h-screen w-full md:container xl:max-w-7xl m-auto">
+    <div className="flex flex-col justify-between h-screen w-full md:container xl:max-w-7xl m-auto">
       <Header
+        className="relative mx-4"
         mainText={labels[selectedState]}
         setSelectedState={setSelectedState}
         labels={labels}
@@ -34,6 +35,7 @@ function App() {
       {/* Контент для ПК */}
       {lastMeasures && isDesktop && (
         <DesktopMainContent
+          className=""
           lastMeasures={lastMeasures}
           selectedState={selectedState}
           history={history}
@@ -51,6 +53,7 @@ function App() {
         />
       )}
 
+      {/* Очистка памяти */}
       <div className="w-full">
         <Button
           onClick={() => {
