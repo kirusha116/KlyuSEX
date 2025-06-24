@@ -22,6 +22,7 @@ export function MyChart({
   chartData: Measures[];
   className: string;
 }) {
+
   const formattedChartData = [
     { ...chartData[0], date: "" },
     ...chartData,

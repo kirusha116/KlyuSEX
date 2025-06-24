@@ -9,15 +9,20 @@ import { states } from "@/constants/states";
 import type { Measures } from "@/models/Measures";
 import { getUnit } from "@/utils/getUnit";
 import { useEffect, useState } from "react";
+import { MyChart } from "./Chart/MyChart";
+import { makeChartData } from "@/utils/makeChartData";
+import type { Records } from "@/models/Records";
 
 export function MobileMainContent({
   lastMeasures,
   selectedState,
   setSelectedState,
+  history,
 }: {
   lastMeasures: Measures;
   selectedState: number;
   setSelectedState: (index: number) => void;
+  history: Records[];
 }) {
   //
   const [api, setApi] = useState<CarouselApi>();
@@ -40,22 +45,29 @@ export function MobileMainContent({
     });
   }, [api, selectedState, setSelectedState]);
   //
+  const chartData = makeChartData(history);
+  //
   return (
-    <Carousel className="w-full" opts={opts} setApi={setApi}>
-      <CarouselContent>
+    <Carousel className="grow h-full" opts={opts} setApi={setApi}>
+      <CarouselContent className="h-full">
         {Object.values(states).map((state, index) => {
           return (
-            <CarouselItem key={index}>
-              <h1 className="text-primary text-center text-4xl leading-12 mt-6">
+            <CarouselItem key={index} className="flex flex-col h-full gap-3">
+              <h1 className="text-primary text-center text-4xl leading-12">
                 {labels[state]}
               </h1>
-              <h2 className="text-primary text-4xl text-center mt-3">
+              <h2 className="text-primary text-4xl text-center">
                 {`${lastMeasures[state]} ${
                   state === states.MetabolicAge
                     ? getUnit(state, +lastMeasures[states.MetabolicAge])
                     : getUnit(state)
                 }`}
               </h2>
+              <MyChart
+                selectedState={state}
+                chartData={chartData}
+                className="grow"
+              />
             </CarouselItem>
           );
         })}

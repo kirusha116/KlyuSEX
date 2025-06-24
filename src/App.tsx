@@ -50,6 +50,7 @@ function App() {
           setSelectedState={(index: number) =>
             setSelectedState(Object.values(states)[index])
           }
+          history={history}
         />
       )}
 
