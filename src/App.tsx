@@ -8,8 +8,9 @@ import { Button } from "./components/ui/button";
 import { AddInterface } from "./components/AddInterface/AddInterface";
 import { saveHistory } from "./utils/saveHistory";
 import { useMediaQuery } from "@mui/material";
-import { MobileMainContent } from "./components/MainContent/MobileMainContent";
+// import { MobileMainContent } from "./components/MainContent/MobileMainContent";
 import { DesktopMainContent } from "./components/MainContent/DesktopMainContent";
+import { getDatesArray, makeChartData } from "./utils/makeChartData";
 
 function App() {
   const [history, setHistory] = useState<Records[]>(getHistory());
@@ -17,6 +18,10 @@ function App() {
   const [selectedState, setSelectedState] = useState<string>(states.Weight);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const isDesktop = useMediaQuery<boolean>("(min-width: 768px)");
+  const datesArray = getDatesArray(
+    history[0]?.date,
+    history[history?.length - 1]?.date
+  );
 
   // console.log(JSON.parse(localStorage.getItem("KlyuSEX")));
   // console.log(history);
@@ -38,12 +43,16 @@ function App() {
           className=""
           lastMeasures={lastMeasures}
           selectedState={selectedState}
-          history={history}
+          chartData={makeChartData(
+            datesArray as string[],
+            history,
+            selectedState
+          )}
         />
       )}
 
       {/* Контент для мобилки */}
-      {lastMeasures && !isDesktop && (
+      {/* {lastMeasures && !isDesktop && (
         <MobileMainContent
           lastMeasures={lastMeasures}
           selectedState={Object.values(states).indexOf(selectedState)}
@@ -52,7 +61,7 @@ function App() {
           }
           history={history}
         />
-      )}
+      )} */}
 
       {/* Очистка памяти */}
       <div className="w-full">
