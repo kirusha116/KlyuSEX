@@ -3,6 +3,8 @@ import type { Records } from "@/models/Records";
 import { getUnit } from "@/utils/getUnit";
 import { MyChart } from "./MyChart";
 import type { ChartData } from "@/utils/makeChartData";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { useEffect, useRef, useState } from "react";
 
 export function DesktopMainContent({
   className,
@@ -15,6 +17,12 @@ export function DesktopMainContent({
   selectedState: string;
   chartData: ChartData;
 }) {
+  const scrollArea = useRef(null);
+  const [chartHeight, setChartHeight] = useState();
+  useEffect(() => {
+    setChartHeight(scrollArea?.current?.clientHeight);
+  }, [scrollArea]);
+
   return (
     <>
       <h2 className={`${className} text-primary text-5xl text-center py-10`}>
@@ -24,11 +32,23 @@ export function DesktopMainContent({
             : getUnit(selectedState)
         }`}
       </h2>
-      <MyChart
-        selectedState={selectedState}
-        chartData={chartData}
+      <ScrollArea
         className="grow"
-      />
+        ref={scrollArea}
+        dir="rtl"
+      >
+        {scrollArea !== null && (
+          <MyChart
+            selectedState={selectedState}
+            chartData={chartData}
+            style={{
+              height: chartHeight + "px",
+              width: (100 / 8) * (chartData.length - 1) + "%",
+            }}
+          />
+        )}
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
     </>
   );
 }

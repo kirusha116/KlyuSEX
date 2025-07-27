@@ -16,11 +16,11 @@ import type { ChartData } from "@/utils/makeChartData";
 export function MyChart({
   selectedState,
   chartData,
-  className,
+  style,
 }: {
   selectedState: string;
   chartData: ChartData;
-  className: string;
+  style: { height: string; width: string };
 }) {
   const chartConfig = {
     line: {
@@ -30,10 +30,7 @@ export function MyChart({
   } satisfies ChartConfig;
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className={`${className} aspect-auto w-full`}
-    >
+    <ChartContainer config={chartConfig} className="aspect-auto" style={style} dir="ltr">
       <AreaChart data={chartData}>
         <defs>
           <linearGradient id="fillLine" x1="0" y1="0" x2="0" y2="1">
@@ -67,7 +64,6 @@ export function MyChart({
               <ChartTooltipContent
                 active={active}
                 payload={payload}
-                className={className}
                 label={label}
                 labelFormatter={labelFormatter}
                 labelClassName={labelClassName}
