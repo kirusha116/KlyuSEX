@@ -17,6 +17,10 @@ export function DesktopMainContent({
   selectedState: string;
   chartData: ChartData;
 }) {
+  const scrolledElem = document.querySelector(
+    '[data-slot="scroll-area-viewport"]'
+  );
+
   const scrollArea = useRef(null);
   const [chartHeight, setChartHeight] = useState();
   useEffect(() => {
@@ -36,17 +40,19 @@ export function DesktopMainContent({
         className="grow"
         ref={scrollArea}
         dir="rtl"
+        onWheel={(e) => {
+          e.stopPropagation();
+          scrolledElem.scrollLeft += e.deltaY;
+        }}
       >
-        {scrollArea !== null && (
-          <MyChart
-            selectedState={selectedState}
-            chartData={chartData}
-            style={{
-              height: chartHeight + "px",
-              width: (100 / 8) * (chartData.length - 1) + "%",
-            }}
-          />
-        )}
+        <MyChart
+          selectedState={selectedState}
+          chartData={chartData}
+          style={{
+            height: chartHeight + "px",
+            width: (100 / 8) * (chartData.length - 1) + "%",
+          }}
+        />
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </>
