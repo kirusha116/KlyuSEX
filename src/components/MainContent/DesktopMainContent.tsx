@@ -7,12 +7,10 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { useEffect, useRef, useState } from "react";
 
 export function DesktopMainContent({
-  className,
   lastMeasures,
   selectedState,
   chartData,
 }: {
-  className: string;
   lastMeasures: Records;
   selectedState: string;
   chartData: ChartData;
@@ -21,15 +19,15 @@ export function DesktopMainContent({
     '[data-slot="scroll-area-viewport"]'
   );
 
-  const scrollArea = useRef(null);
-  const [chartHeight, setChartHeight] = useState();
+  const scrollArea = useRef<HTMLDivElement>(null);
+  const [chartHeight, setChartHeight] = useState<number>();
   useEffect(() => {
-    setChartHeight(scrollArea?.current?.clientHeight);
+    setChartHeight(scrollArea!.current!.clientHeight);
   }, [scrollArea]);
 
   return (
     <>
-      <h2 className={`${className} text-primary text-5xl text-center py-10`}>
+      <h2 className="text-primary text-5xl text-center py-10`">
         {`${lastMeasures[selectedState]} ${
           selectedState === states.MetabolicAge
             ? getUnit(selectedState, +lastMeasures[states.MetabolicAge])
@@ -42,7 +40,7 @@ export function DesktopMainContent({
         dir="rtl"
         onWheel={(e) => {
           e.stopPropagation();
-          scrolledElem.scrollLeft += e.deltaY;
+          scrolledElem!.scrollLeft += e.deltaY;
         }}
       >
         <MyChart

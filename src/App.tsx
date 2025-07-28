@@ -11,6 +11,7 @@ import { useMediaQuery } from "@mui/material";
 // import { MobileMainContent } from "./components/MainContent/MobileMainContent";
 import { DesktopMainContent } from "./components/MainContent/DesktopMainContent";
 import { getDatesArray, makeChartData } from "./utils/makeChartData";
+import { MobileMainContent } from "./components/MainContent/MobileMainContent";
 
 function App() {
   const [history, setHistory] = useState<Records[]>(getHistory());
@@ -21,6 +22,11 @@ function App() {
   const datesArray = getDatesArray(
     history[0]?.date,
     history[history?.length - 1]?.date
+  );
+  const chartData = makeChartData(
+    datesArray as string[],
+    history,
+    selectedState
   );
 
   // console.log(JSON.parse(localStorage.getItem("KlyuSEX")));
@@ -40,19 +46,14 @@ function App() {
       {/* Контент для ПК */}
       {lastMeasures && isDesktop && (
         <DesktopMainContent
-          className=""
           lastMeasures={lastMeasures}
           selectedState={selectedState}
-          chartData={makeChartData(
-            datesArray as string[],
-            history,
-            selectedState
-          )}
+          chartData={chartData}
         />
       )}
 
       {/* Контент для мобилки */}
-      {/* {lastMeasures && !isDesktop && (
+      {lastMeasures && !isDesktop && (
         <MobileMainContent
           lastMeasures={lastMeasures}
           selectedState={Object.values(states).indexOf(selectedState)}
@@ -60,8 +61,9 @@ function App() {
             setSelectedState(Object.values(states)[index])
           }
           history={history}
+          chartData={chartData}
         />
-      )} */}
+      )}
 
       {/* Очистка памяти */}
       <div className="w-full">

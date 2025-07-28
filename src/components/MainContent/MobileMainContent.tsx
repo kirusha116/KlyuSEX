@@ -8,27 +8,35 @@ import { labels } from "@/constants/labels";
 import { states } from "@/constants/states";
 import type { Measures } from "@/models/Measures";
 import { getUnit } from "@/utils/getUnit";
-import { useEffect, useState } from "react";
-import { makeChartData } from "@/utils/makeChartData";
+import { useEffect, useRef, useState } from "react";
+import type { ChartData } from "@/utils/makeChartData";
 import type { Records } from "@/models/Records";
+import { MyChart } from "./MyChart";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export function MobileMainContent({
   lastMeasures,
   selectedState,
   setSelectedState,
-  history,
+  chartData,
 }: {
   lastMeasures: Measures;
   selectedState: number;
   setSelectedState: (index: number) => void;
   history: Records[];
+  chartData: ChartData;
 }) {
+  const scrollArea = useRef<HTMLDivElement>(null);
+  const [chartHeight, setChartHeight] = useState<number>();
+  useEffect(() => {
+    setChartHeight(scrollArea!.current!.clientHeight);
+  }, [scrollArea]);
+
   //
   const [api, setApi] = useState<CarouselApi>();
   const [opts, setOpts] = useState<
     Partial<{ startIndex: number }> | undefined
   >();
-
   useEffect(() => {
     if (!api) {
       setOpts({ startIndex: selectedState });
@@ -44,14 +52,15 @@ export function MobileMainContent({
     });
   }, [api, selectedState, setSelectedState]);
   //
-  const chartData = makeChartData(history);
-  //
   return (
     <Carousel className="grow h-full" opts={opts} setApi={setApi}>
       <CarouselContent className="h-full">
         {Object.values(states).map((state, index) => {
           return (
-            <CarouselItem key={index} className="flex flex-col h-full gap-3">
+            <CarouselItem
+              key={index}
+              className="flex flex-col h-full gap-3 overflow-hidden"
+            >
               <h1 className="text-primary text-center text-4xl leading-12">
                 {labels[state]}
               </h1>
@@ -62,11 +71,16 @@ export function MobileMainContent({
                     : getUnit(state)
                 }`}
               </h2>
-              <MyChart
-                selectedState={state}
-                chartData={chartData}
-                className="grow"
-              />
+              <ScrollArea className="grow" ref={scrollArea} dir="rtl">
+                <MyChart
+                  selectedState={Object.values(states)[index]}
+                  chartData={chartData}
+                  style={{
+                    height: chartHeight + "px",
+                    width: (100 / 8) * (chartData.length - 1) + "%",
+                  }}
+                />
+              </ScrollArea>
             </CarouselItem>
           );
         })}
