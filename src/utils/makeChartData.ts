@@ -28,6 +28,7 @@ export function makeChartData(
   history: Records[],
   selectedState: string
 ): ChartData {
+  if (!history.length) return [];
   type HistoryObj = { [x: string]: string | undefined };
   //
   const historyObj: HistoryObj = history.reduce((acc, item) => {
